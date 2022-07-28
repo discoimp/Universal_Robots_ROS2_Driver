@@ -1,0 +1,9 @@
+name: Docker Compose Humble Build
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the stack
+        run: ROS2_DISTRO=humble BUILD_MOVEIT2=1 docker compose up -d --build
