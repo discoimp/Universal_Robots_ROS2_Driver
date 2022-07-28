@@ -45,40 +45,18 @@
 
 ARG ROS2_DISTRO
 
-FROM ros:$ROS2_DISTRO
+FROM moveit/moveit2:humble-release
 
 ARG ROS2_DISTRO
-ARG BUILD_MOVEIT2=0
-
-#ENV ROS2_DISTRO_ENV=$ROS2_DISTRO
-#ENV BUILD_MOVEIT2_ENV=$BUILD_MOVEIT2
 
 RUN echo "${ROS2_DISTRO}"
-RUN echo "${BUILD_MOVEIT2}"
 
 ARG COLCON_WS=~/workspace/ros_ur_driver
 WORKDIR $COLCON_WS
 
-RUN if [ "$ROS2_DISTRO" = "foxy" ] ; then \
-	echo 'USING UR driver FOXY BRANCH!'; \
-	git clone --branch foxy https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git src/Universal_Robots_ROS2_Driver; \
-    else if [ "$ROS2_DISTRO" = "humble" ] ; then \
-    	echo 'USING UR driver HUMBLE BRANCH!'; \
-	git clone https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git src/Universal_Robots_ROS2_Driver \
-    fi;
+RUN git clone https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git src/Universal_Robots_ROS2_Driver
 
-RUN vcs import src --skip-existing --input src/Universal_Robots_ROS2_Driver/Universal_Robots_ROS2_Driver-not-released.${ROS_DISTRO}.repos
-
-RUN if [ $BUILD_MOVEIT2 = 1 ] ; then \
-        echo 'BUILDING MOVEIT2!!' ; \
-    	vcs import src --skip-existing --input src/Universal_Robots_ROS2_Driver/MoveIt_Support.repos; \
-        if [ "$ROS2_DISTRO" = "foxy" ] ; then \
-    		echo 'CHECKING OUT MOVEIT2 ON FOXY BRANCH!'; \
-		cd src/moveit2 && git checkout foxy && cd ../../; \
-    	fi; \
-        vcs import src --skip-existing --input src/moveit2/moveit2.repos; \
-    else echo 'NOT BUILDING MOVEIT2!!'; \
-    fi;
+RUN vcs import src --skip-existing --input src/Universal_Robots_ROS2_Driver/Universal_Robots_ROS2_Driver-not-released.${ROS2_DISTRO}.repos
 
 RUN apt-get update && rosdep update \
     && rosdep install --ignore-src --from-paths src -y -r \
@@ -101,3 +79,4 @@ COPY ./wait_dashboard_server.sh /wait_dashboard_server.sh
 RUN chmod 755 /wait_dashboard_server.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
+
