@@ -9,7 +9,7 @@ Driver and URsim can be run together by following command  which will build nece
 With appropriate arguments set the ROS2 distro and the Moveit2! build is required.
 Run following command in `ur_robot_driver/resources/ursim_driver` folder of this package.
 ```
-ROS2_DISTRO=foxy BUILD_MOVEIT2=0 docker-compose up --build
+ROS2_DISTRO=humble BUILD_MOVEIT2=0 docker compose up --build
 ```
 
 
