@@ -51,7 +51,7 @@ ARG ROS2_DISTRO
 
 RUN echo "${ROS2_DISTRO}"
 
-ARG COLCON_WS=~/workspace/ros_ur_driver
+ARG COLCON_WS=~/workspace/ros_ws_ur_driver
 WORKDIR $COLCON_WS
 
 RUN git clone https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git src/Universal_Robots_ROS2_Driver
