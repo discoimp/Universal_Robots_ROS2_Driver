@@ -6,4 +6,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the stack
-        run: ROS2_DISTRO=humble BUILD_MOVEIT2=1 ocker compose --file ur_robot_driver/resources/ursim_driver/docker-compose.yml up -d
+        run: ROS2_DISTRO=humble BUILD_MOVEIT2=1 docker compose --file ur_robot_driver/resources/ursim_driver/docker-compose.yml up -d
