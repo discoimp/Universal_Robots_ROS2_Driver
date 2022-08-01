@@ -60,13 +60,14 @@ RUN vcs import src --skip-existing --input src/Universal_Robots_ROS2_Driver/Univ
 
 RUN apt-get update && rosdep update \
     && rosdep install --ignore-src --from-paths src -y -r \
-    && /bin/bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release" \
+    && /bin/bash -c "source /opt/ros/${ROS2_DISTRO}/setup.bash && colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release" \
     && echo "source install/setup.bash" >> /root/.bashrc \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y xvfb \
     x11vnc \
     netcat \
+    ros-${ROS2_DISTRO}-ros2-control ros-${ROS2_DISTRO}-ros2-controller \
     && rm -rf /var/lib/apt/lists/*
 
 # VNC viewer
