@@ -64,10 +64,15 @@ RUN apt-get update && rosdep update \
     && echo "source install/setup.bash" >> /root/.bashrc \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt update \
+    && sudo apt install curl gnupg lsb-release -y \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(source /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+
 RUN apt-get update && apt-get install -y xvfb \
     x11vnc \
+    iputils-ping \
     netcat \
-    ros-${ROS2_DISTRO}-ros2-control ros-${ROS2_DISTRO}-ros2-controller \
+    ros-${ROS2_DISTRO}-ros2-control ros-${ROS2_DISTRO}-ros2-controllers \
     && rm -rf /var/lib/apt/lists/*
 
 # VNC viewer
